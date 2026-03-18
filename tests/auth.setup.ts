@@ -2,10 +2,9 @@
  * Auth setup — runs as the 'setup' project before all UI tests.
  * Logs in each role via API and saves storageState to .auth/.
  *
- * This is the idiomatic Playwright v1.35+ pattern:
- * - Use a 'setup' project with testMatch: "auth.setup.ts"
- * - UI projects declare dependencies: ['setup']
- * - No deprecated globalSetup needed
+ * Deliberately browser-free: storageState is written directly as JSON
+ * so this project works on any browser runner (Firefox, WebKit, Chromium)
+ * without needing to install Chromium on every CI job.
  */
 import { test as setup, expect } from '@playwright/test';
 import path from 'path';
@@ -24,66 +23,51 @@ async function saveAuthState(
   email: string,
   password: string,
   fileName: string,
-  page: any
 ) {
   const baseUrl = process.env.BASE_URL || 'http://localhost';
   const apiUrl = `${baseUrl}/api/v1`;
 
-  // Login via API (not through UI — faster and more reliable for setup)
+  // Login via API
   const res = await request.post(`${apiUrl}/auth/login`, {
     data: { email, password },
   });
-
   expect(res.status(), `Login failed for ${email}: ${await res.text()}`).toBe(200);
   const tokens = await res.json();
 
-  // Fetch the real user profile to get the id (needed for frontend role/id checks)
+  // Fetch the full user profile (includes id, needed by frontend canCancel checks)
   const meRes = await request.get(`${apiUrl}/users/me`, {
     headers: { Authorization: `Bearer ${tokens.access_token}` },
   });
   expect(meRes.status(), `Failed to fetch /users/me for ${email}`).toBe(200);
   const user = await meRes.json();
 
-  // Store the token and full user profile in localStorage via a minimal page load
-  await page.goto(`${baseUrl}/index.html`);
-  await page.evaluate(
-    ({ token, user }: { token: string; user: object }) => {
-      localStorage.setItem('clinic_token', token);
-      localStorage.setItem('clinic_user', JSON.stringify(user));
-    },
-    { token: tokens.access_token, user }
-  );
+  // Write storageState JSON directly — no browser launch required.
+  // This format is exactly what Playwright reads when loading storageState.
+  const storageState = {
+    cookies: [],
+    origins: [
+      {
+        origin: baseUrl,
+        localStorage: [
+          { name: 'clinic_token', value: tokens.access_token },
+          { name: 'clinic_user', value: JSON.stringify(user) },
+        ],
+      },
+    ],
+  };
 
-  await page.context().storageState({ path: path.join(AUTH_DIR, fileName) });
+  fs.writeFileSync(path.join(AUTH_DIR, fileName), JSON.stringify(storageState, null, 2));
   console.log(`  ✓ Auth state saved: .auth/${fileName}`);
 }
 
-setup('authenticate as patient', async ({ request, page }) => {
-  await saveAuthState(
-    request,
-    process.env.PATIENT_EMAIL!,
-    process.env.PATIENT_PASSWORD!,
-    'patient.json',
-    page
-  );
+setup('authenticate as patient', async ({ request }) => {
+  await saveAuthState(request, process.env.PATIENT_EMAIL!, process.env.PATIENT_PASSWORD!, 'patient.json');
 });
 
-setup('authenticate as doctor', async ({ request, page }) => {
-  await saveAuthState(
-    request,
-    process.env.DOCTOR_EMAIL!,
-    process.env.DOCTOR_PASSWORD!,
-    'doctor.json',
-    page
-  );
+setup('authenticate as doctor', async ({ request }) => {
+  await saveAuthState(request, process.env.DOCTOR_EMAIL!, process.env.DOCTOR_PASSWORD!, 'doctor.json');
 });
 
-setup('authenticate as admin', async ({ request, page }) => {
-  await saveAuthState(
-    request,
-    process.env.ADMIN_EMAIL!,
-    process.env.ADMIN_PASSWORD!,
-    'admin.json',
-    page
-  );
+setup('authenticate as admin', async ({ request }) => {
+  await saveAuthState(request, process.env.ADMIN_EMAIL!, process.env.ADMIN_PASSWORD!, 'admin.json');
 });
