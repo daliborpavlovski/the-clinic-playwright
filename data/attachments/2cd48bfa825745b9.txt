@@ -1,2 +1,0 @@
-  ✓ [API] POST auth/login → 200 (285ms)
-  ✗ [API] GET doctors/999999 → 404 (8ms)
