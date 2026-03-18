@@ -1,0 +1,89 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - generic [ref=e4]:
+      - img [ref=e5]
+      - text: The Clinic
+      - generic [ref=e9]: App
+    - navigation [ref=e10]:
+      - link "Dashboard" [ref=e11] [cursor=pointer]:
+        - /url: /dashboard.html
+        - img [ref=e12]
+        - generic [ref=e17]: Dashboard
+      - link "Appointments" [ref=e18] [cursor=pointer]:
+        - /url: /appointments.html
+        - img [ref=e19]
+        - generic [ref=e21]: Appointments
+      - link "Doctors" [ref=e22] [cursor=pointer]:
+        - /url: /doctors.html
+        - img [ref=e23]
+        - generic [ref=e26]: Doctors
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - generic [ref=e29]: TU
+        - generic [ref=e30]:
+          - generic [ref=e31]: Test User
+          - generic [ref=e32]: Patient
+      - button "Sign out" [ref=e33] [cursor=pointer]
+  - generic [ref=e34]:
+    - banner [ref=e35]:
+      - generic [ref=e36]: Appointments
+    - main [ref=e37]:
+      - generic [ref=e38]:
+        - generic [ref=e39]:
+          - heading "Appointments" [level=1] [ref=e40]
+          - paragraph [ref=e41]: Manage your appointments
+        - button "+ New Appointment" [ref=e42] [cursor=pointer]
+      - table [ref=e44]:
+        - rowgroup [ref=e45]:
+          - row "Date / Time Doctor Patient Reason Status Actions" [ref=e46]:
+            - columnheader "Date / Time" [ref=e47]
+            - columnheader "Doctor" [ref=e48]
+            - columnheader "Patient" [ref=e49]
+            - columnheader "Reason" [ref=e50]
+            - columnheader "Status" [ref=e51]
+            - columnheader "Actions" [ref=e52]
+        - rowgroup [ref=e53]:
+          - 'row "Mar 23, 2026, 8:21 PM Dr. #2 Patient #3 Follow-up consultation confirmed" [ref=e54]':
+            - cell "Mar 23, 2026, 8:21 PM" [ref=e55]
+            - 'cell "Dr. #2" [ref=e56]'
+            - 'cell "Patient #3" [ref=e57]'
+            - cell "Follow-up consultation" [ref=e58]
+            - cell "confirmed" [ref=e59]:
+              - generic [ref=e60]: confirmed
+            - cell [ref=e61]
+          - 'row "Mar 22, 2026, 11:00 PM Dr. #2 Patient #3 UI test - routine checkup pending" [ref=e62]':
+            - cell "Mar 22, 2026, 11:00 PM" [ref=e63]
+            - 'cell "Dr. #2" [ref=e64]'
+            - 'cell "Patient #3" [ref=e65]'
+            - cell "UI test - routine checkup" [ref=e66]
+            - cell "pending" [ref=e67]:
+              - generic [ref=e68]: pending
+            - cell [ref=e69]
+          - 'row "Mar 21, 2026, 4:00 PM Dr. #2 Patient #3 Cancel UI test pending" [ref=e70]':
+            - cell "Mar 21, 2026, 4:00 PM" [ref=e71]
+            - 'cell "Dr. #2" [ref=e72]'
+            - 'cell "Patient #3" [ref=e73]'
+            - cell "Cancel UI test" [ref=e74]
+            - cell "pending" [ref=e75]:
+              - generic [ref=e76]: pending
+            - cell [ref=e77]
+          - 'row "Mar 20, 2026, 6:21 PM Dr. #2 Patient #3 Annual checkup pending" [ref=e78]':
+            - cell "Mar 20, 2026, 6:21 PM" [ref=e79]
+            - 'cell "Dr. #2" [ref=e80]'
+            - 'cell "Patient #3" [ref=e81]'
+            - cell "Annual checkup" [ref=e82]
+            - cell "pending" [ref=e83]:
+              - generic [ref=e84]: pending
+            - cell [ref=e85]
+          - 'row "Mar 8, 2026, 4:21 PM Dr. #2 Patient #3 Routine blood work review completed" [ref=e86]':
+            - cell "Mar 8, 2026, 4:21 PM" [ref=e87]
+            - 'cell "Dr. #2" [ref=e88]'
+            - 'cell "Patient #3" [ref=e89]'
+            - cell "Routine blood work review" [ref=e90]
+            - cell "completed" [ref=e91]:
+              - generic [ref=e92]: completed
+            - cell [ref=e93]
+```

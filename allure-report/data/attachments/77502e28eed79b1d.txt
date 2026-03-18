@@ -1,0 +1,25 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - heading "The ClinicApp" [level=1] [ref=e5]
+    - paragraph [ref=e6]: Clinic Appointment Management Platform
+  - generic [ref=e8]: Unauthorized
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - generic [ref=e11]: Email address
+      - textbox "Email address" [ref=e12]:
+        - /placeholder: you@example.com
+        - text: patient@theclinicapp.com
+    - generic [ref=e13]:
+      - generic [ref=e14]: Password
+      - textbox "Password" [ref=e15]:
+        - /placeholder: ••••••••
+        - text: WrongPassword999
+    - button "Sign in" [ref=e16] [cursor=pointer]
+  - paragraph [ref=e17]:
+    - text: New patient?
+    - link "Create account" [ref=e18] [cursor=pointer]:
+      - /url: /register.html
+```
