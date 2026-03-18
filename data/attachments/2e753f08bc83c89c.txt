@@ -1,0 +1,2 @@
+  ✓ [API] POST auth/register → 201 (329ms)
+  ✗ [API] POST auth/login → 401 (296ms)
