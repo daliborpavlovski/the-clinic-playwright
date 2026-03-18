@@ -1,6 +1,0 @@
-  ✓ [API] POST auth/login → 200 (328ms)
-  ✓ [API] POST auth/login → 200 (286ms)
-  ✓ [API] GET users/me → 200 (15ms)
-  ✓ [API] POST appointments → 201 (26ms)
-  ✓ [API] GET appointments/5 → 200 (9ms)
-  ✓ [API] DELETE appointments/5 → 204 (12ms)
