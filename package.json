@@ -1,0 +1,31 @@
+{
+  "name": "the-clinic-playwright",
+  "version": "1.0.0",
+  "description": "Production-grade Playwright E2E + API test framework for The Clinic App",
+  "private": true,
+  "scripts": {
+    "test": "npx playwright test",
+    "test:smoke": "npx playwright test --grep @smoke --project=chromium",
+    "test:ui": "npx playwright test tests/ui/",
+    "test:api": "npx playwright test tests/api/ --project=api",
+    "test:visual": "npx playwright test tests/visual/ --project=visual",
+    "test:headed": "npx playwright test --headed",
+    "report": "npx playwright show-report",
+    "allure:generate": "allure generate allure-results -o allure-report --clean",
+    "allure:open": "allure open allure-report",
+    "codegen": "npx playwright codegen http://localhost"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.12.12",
+    "allure-js-commons": "^2.14.0",
+    "allure-playwright": "^2.14.0",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1"
+  }
+}

@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  playwright:
+    build: .
+    container_name: clinic-playwright
+    network_mode: host  # Access the-clinic-app on localhost
+    environment:
+      TEST_ENV: local
+      BASE_URL: http://localhost
+      API_URL: http://localhost/api/v1
+      PATIENT_EMAIL: patient@theclinicapp.com
+      PATIENT_PASSWORD: Patient1234!
+      DOCTOR_EMAIL: doctor@theclinicapp.com
+      DOCTOR_PASSWORD: Doctor1234!
+      ADMIN_EMAIL: admin@theclinicapp.com
+      ADMIN_PASSWORD: Admin1234!
+      CI: "true"
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./allure-results:/app/allure-results
+      - ./test-results:/app/test-results

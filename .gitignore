@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Dependencies
+node_modules/
+dist/
+
+# Playwright test artifacts (generated at runtime, not for repo)
+playwright-report/
+allure-results/
+allure-report/
+test-results/
+
+# Auth state files — contain JWT tokens, never commit
+.auth/
+
+# Visual snapshot diffs (only baselines are committed)
+snapshots/**/*.png-actual
+snapshots/**/*.png-diff
+*.png-actual
+*.png-diff
+
+# Environment files — only local.env (no secrets) is committed
+config/environments/*.env
+!config/environments/local.env
