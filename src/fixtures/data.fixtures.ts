@@ -11,14 +11,17 @@ export type DataFixtures = {
   createTestAppointment: (patientToken: string, doctorId: number) => Promise<Appointment>;
 };
 
+const API_BASE_URL = (process.env.API_URL || 'http://localhost/api/v1').replace(/\/?$/, '/');
+
 export const dataFixtures = base.extend<DataFixtures>({
-  createTestUser: async ({ request }, use) => {
+  createTestUser: async ({ playwright }, use) => {
+    const apiContext = await playwright.request.newContext({ baseURL: API_BASE_URL });
     const createdIds: number[] = [];
 
     const factory = async (role: 'patient' | 'doctor' | 'admin' = 'patient') => {
       const email = randomEmail(role);
       const password = randomPassword();
-      const authClient = new AuthClient(request);
+      const authClient = new AuthClient(apiContext);
 
       const { response, body } = await authClient.register({
         email,
@@ -37,32 +40,26 @@ export const dataFixtures = base.extend<DataFixtures>({
 
     await use(factory);
 
-    // Cleanup: deactivate created users via admin API
-    // (Best effort — test isolation without requiring delete permission)
-    const adminEmail = process.env.ADMIN_EMAIL!;
-    const adminPassword = process.env.ADMIN_PASSWORD!;
-    const adminAuth = new AuthClient(request);
+    // Cleanup: delete created users via admin API
+    const adminAuth = new AuthClient(apiContext);
     try {
-      await adminAuth.loginAndSetToken(adminEmail, adminPassword);
-      const usersClient = new UsersClient(request);
+      await adminAuth.loginAndSetToken(process.env.ADMIN_EMAIL!, process.env.ADMIN_PASSWORD!);
+      const usersClient = new UsersClient(apiContext);
       usersClient.setToken(adminAuth['token']!);
       for (const id of createdIds) {
-        try {
-          await usersClient.deleteUser(id);
-        } catch {
-          // Best effort
-        }
+        try { await usersClient.deleteUser(id); } catch { /* best effort */ }
       }
-    } catch {
-      // Best effort
-    }
+    } catch { /* best effort */ }
+
+    await apiContext.dispose();
   },
 
-  createTestAppointment: async ({ request }, use) => {
+  createTestAppointment: async ({ playwright }, use) => {
+    const apiContext = await playwright.request.newContext({ baseURL: API_BASE_URL });
     const createdIds: number[] = [];
 
     const factory = async (patientToken: string, doctorId: number): Promise<Appointment> => {
-      const apptClient = new AppointmentsClient(request);
+      const apptClient = new AppointmentsClient(apiContext);
       apptClient.setToken(patientToken);
 
       const [start, end] = futureSlotPair(30, 26 + Math.floor(Math.random() * 48));
@@ -85,23 +82,17 @@ export const dataFixtures = base.extend<DataFixtures>({
 
     // Cleanup
     if (createdIds.length > 0) {
-      const adminEmail = process.env.ADMIN_EMAIL!;
-      const adminPassword = process.env.ADMIN_PASSWORD!;
-      const adminAuth = new AuthClient(request);
+      const adminAuth = new AuthClient(apiContext);
       try {
-        await adminAuth.loginAndSetToken(adminEmail, adminPassword);
-        const apptClient = new AppointmentsClient(request);
+        await adminAuth.loginAndSetToken(process.env.ADMIN_EMAIL!, process.env.ADMIN_PASSWORD!);
+        const apptClient = new AppointmentsClient(apiContext);
         apptClient.setToken(adminAuth['token']!);
         for (const id of createdIds) {
-          try {
-            await apptClient.deleteAppointment(id);
-          } catch {
-            // Best effort
-          }
+          try { await apptClient.deleteAppointment(id); } catch { /* best effort */ }
         }
-      } catch {
-        // Best effort
-      }
+      } catch { /* best effort */ }
     }
+
+    await apiContext.dispose();
   },
 });

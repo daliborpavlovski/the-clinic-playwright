@@ -37,17 +37,21 @@ async function saveAuthState(
   expect(res.status(), `Login failed for ${email}: ${await res.text()}`).toBe(200);
   const tokens = await res.json();
 
-  // Store the token in localStorage via a minimal page load
+  // Fetch the real user profile to get the id (needed for frontend role/id checks)
+  const meRes = await request.get(`${apiUrl}/users/me`, {
+    headers: { Authorization: `Bearer ${tokens.access_token}` },
+  });
+  expect(meRes.status(), `Failed to fetch /users/me for ${email}`).toBe(200);
+  const user = await meRes.json();
+
+  // Store the token and full user profile in localStorage via a minimal page load
   await page.goto(`${baseUrl}/index.html`);
   await page.evaluate(
     ({ token, user }: { token: string; user: object }) => {
       localStorage.setItem('clinic_token', token);
       localStorage.setItem('clinic_user', JSON.stringify(user));
     },
-    {
-      token: tokens.access_token,
-      user: { email, role: email.startsWith('admin') ? 'admin' : email.startsWith('doctor') ? 'doctor' : 'patient', full_name: 'Test User' },
-    }
+    { token: tokens.access_token, user }
   );
 
   await page.context().storageState({ path: path.join(AUTH_DIR, fileName) });
