@@ -22,6 +22,9 @@ export type ApiFixtures = {
   anonApi: ApiBundle;
 };
 
+// Always ensure a trailing slash so relative paths (e.g. 'auth/login') resolve correctly.
+const API_BASE_URL = (process.env.API_URL || 'http://localhost/api/v1').replace(/\/?$/, '/');
+
 function makeBundle(request: APIRequestContext, token: string | null = null): ApiBundle {
   const makeClient = <T extends { setToken: (t: string) => T }>(Client: new (r: APIRequestContext) => T) => {
     const c = new Client(request);
@@ -44,28 +47,30 @@ async function loginRole(request: APIRequestContext, email: string, password: st
 }
 
 export const apiFixtures = base.extend<ApiFixtures>({
-  patientApi: async ({ request }, use) => {
-    const email = process.env.PATIENT_EMAIL!;
-    const password = process.env.PATIENT_PASSWORD!;
-    const token = await loginRole(request, email, password);
-    await use(makeBundle(request, token));
+  patientApi: async ({ playwright }, use) => {
+    const apiContext = await playwright.request.newContext({ baseURL: API_BASE_URL });
+    const token = await loginRole(apiContext, process.env.PATIENT_EMAIL!, process.env.PATIENT_PASSWORD!);
+    await use(makeBundle(apiContext, token));
+    await apiContext.dispose();
   },
 
-  doctorApi: async ({ request }, use) => {
-    const email = process.env.DOCTOR_EMAIL!;
-    const password = process.env.DOCTOR_PASSWORD!;
-    const token = await loginRole(request, email, password);
-    await use(makeBundle(request, token));
+  doctorApi: async ({ playwright }, use) => {
+    const apiContext = await playwright.request.newContext({ baseURL: API_BASE_URL });
+    const token = await loginRole(apiContext, process.env.DOCTOR_EMAIL!, process.env.DOCTOR_PASSWORD!);
+    await use(makeBundle(apiContext, token));
+    await apiContext.dispose();
   },
 
-  adminApi: async ({ request }, use) => {
-    const email = process.env.ADMIN_EMAIL!;
-    const password = process.env.ADMIN_PASSWORD!;
-    const token = await loginRole(request, email, password);
-    await use(makeBundle(request, token));
+  adminApi: async ({ playwright }, use) => {
+    const apiContext = await playwright.request.newContext({ baseURL: API_BASE_URL });
+    const token = await loginRole(apiContext, process.env.ADMIN_EMAIL!, process.env.ADMIN_PASSWORD!);
+    await use(makeBundle(apiContext, token));
+    await apiContext.dispose();
   },
 
-  anonApi: async ({ request }, use) => {
-    await use(makeBundle(request, null));
+  anonApi: async ({ playwright }, use) => {
+    const apiContext = await playwright.request.newContext({ baseURL: API_BASE_URL });
+    await use(makeBundle(apiContext, null));
+    await apiContext.dispose();
   },
 });

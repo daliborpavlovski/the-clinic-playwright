@@ -7,7 +7,7 @@ const env = process.env.TEST_ENV || 'local';
 dotenv.config({ path: path.resolve(__dirname, `config/environments/${env}.env`) });
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost';
-const API_URL = process.env.API_URL || 'http://localhost/api/v1';
+const API_URL = (process.env.API_URL || 'http://localhost/api/v1').replace(/\/?$/, '/');
 const IS_CI = !!process.env.CI;
 
 export default defineConfig({
