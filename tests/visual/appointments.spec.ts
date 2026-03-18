@@ -1,5 +1,5 @@
-import { test, expect } from '../../src/fixtures/index';
-import { AppointmentsListPage } from '../../src/pages/appointments/appointments-list.page';
+import { test, expect } from '../../../src/fixtures/index';
+import { AppointmentsListPage } from '../../../src/pages/appointments/appointments-list.page';
 
 test.describe('Visual — Appointments Page', () => {
   test('appointments list matches baseline snapshot', async ({ page }) => {

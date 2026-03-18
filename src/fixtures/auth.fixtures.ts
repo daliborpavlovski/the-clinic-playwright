@@ -10,7 +10,7 @@ export type AuthContexts = {
 type Role = 'patient' | 'doctor' | 'admin';
 
 async function contextForRole(browser: Browser, role: Role): Promise<BrowserContext> {
-  return browser.newContext({ storageState: path.resolve(`.auth/${role}.json`) });
+  return browser.newContext({ storageState: path.join(__dirname, '../../.auth', `${role}.json`) });
 }
 
 /**

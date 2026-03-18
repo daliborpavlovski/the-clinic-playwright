@@ -1,4 +1,4 @@
-import { test, expect } from '../../src/fixtures/index';
+import { test, expect } from '../../../src/fixtures/index';
 
 test.describe('Visual — Login Page', () => {
   test.use({ storageState: { cookies: [], origins: [] } });

@@ -1,5 +1,5 @@
-import { test, expect } from '../../src/fixtures/index';
-import { DashboardPage } from '../../src/pages/dashboard.page';
+import { test, expect } from '../../../src/fixtures/index';
+import { DashboardPage } from '../../../src/pages/dashboard.page';
 
 test.describe('Visual — Dashboard Page', () => {
   test('patient dashboard matches baseline snapshot', async ({ page }) => {
