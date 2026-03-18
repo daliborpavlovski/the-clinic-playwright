@@ -30,9 +30,11 @@ export async function loginAndGoto(
   });
   const user = await meRes.json();
 
-  // Set token on a neutral page first — protected pages redirect before evaluate() runs
-  await page.goto(`${BASE}/index.html`);
-  await page.evaluate(
+  // Inject credentials via addInitScript so they are written before the target
+  // page's own JavaScript runs — no intermediate navigation to index.html needed.
+  // This avoids a WebKit race where page.evaluate() fires while the auth guard
+  // on index.html is still redirecting, destroying the execution context.
+  await page.addInitScript(
     ({ t, u }: { t: string; u: unknown }) => {
       localStorage.setItem('clinic_token', t);
       localStorage.setItem('clinic_user', JSON.stringify(u));
