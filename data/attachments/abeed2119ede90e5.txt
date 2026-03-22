@@ -1,0 +1,30 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - heading "The ClinicApp" [level=1] [ref=e5]
+    - paragraph [ref=e6]: Create your patient account
+  - generic [ref=e8]: Not authenticated
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - generic [ref=e11]: Full name
+      - textbox "Full name" [ref=e12]:
+        - /placeholder: Jane Smith
+        - text: Carol Jones
+    - generic [ref=e13]:
+      - generic [ref=e14]: Email address
+      - textbox "Email address" [ref=e15]:
+        - /placeholder: you@example.com
+        - text: ui-reg-96efaecb@test-theclinicapp.com
+    - generic [ref=e16]:
+      - generic [ref=e17]: Password
+      - textbox "Password" [ref=e18]:
+        - /placeholder: Min. 8 chars, one digit
+        - text: TestPass2100c96e1
+    - button "Create account" [ref=e19] [cursor=pointer]
+  - paragraph [ref=e20]:
+    - text: Already have an account?
+    - link "Sign in" [ref=e21] [cursor=pointer]:
+      - /url: /index.html
+```

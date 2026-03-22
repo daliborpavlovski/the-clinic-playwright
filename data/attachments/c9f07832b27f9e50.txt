@@ -1,2 +1,0 @@
-  ✓ [API] POST auth/login → 200 (307ms)
-  ✓ [API] GET doctors?page=1&size=10 → 200 (18ms)
