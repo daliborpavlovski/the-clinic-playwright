@@ -1,0 +1,3 @@
+  ✓ [API] POST auth/register → 201 (460ms)
+  ✓ [API] POST auth/login → 200 (317ms)
+  ✓ [API] DELETE users/4 → 204 (13ms)

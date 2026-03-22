@@ -1,0 +1,4 @@
+  ✓ [API] POST auth/login → 200 (338ms)
+  ✓ [API] POST auth/login → 200 (293ms)
+  ✓ [API] GET users/me → 200 (8ms)
+  ✓ [API] GET doctors/2/slots? → 200 (11ms)

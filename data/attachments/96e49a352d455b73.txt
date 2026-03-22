@@ -1,2 +1,0 @@
-  ✓ [API] POST auth/login → 200 (320ms)
-  ✓ [API] GET appointments?page=9999&size=20 → 200 (24ms)
