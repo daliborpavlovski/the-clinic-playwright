@@ -1,2 +1,0 @@
-  ✓ [API] POST auth/login → 200 (282ms)
-  ✓ [API] GET users?page=1&size=10 → 200 (8ms)

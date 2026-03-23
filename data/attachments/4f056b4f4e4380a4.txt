@@ -1,0 +1,4 @@
+  ✓ [API] POST auth/login → 200 (516ms)
+  ✓ [API] POST auth/login → 200 (317ms)
+  ✓ [API] GET users/me → 200 (20ms)
+  ✓ [API] POST appointments → 201 (27ms)
